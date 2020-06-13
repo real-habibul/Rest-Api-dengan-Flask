@@ -1,40 +1,18 @@
 # import library
-from flask import Flask, request
-from flask_restful import Resource, Api
-from flask_cors import CORS
+from flask import Flask, render_template
 
-# inisiasi object
-app = Flask(__name__)
+aplikasi = Flask(__name__)
 
-# inisiasi object dari flask_resful
-api = Api(app)
+# Routes
+from user import routes
 
-# inisiasi object flask_cors
-CORS(app)
+@aplikasi.route("/")
+def home():
+    return render_template('home.html')
 
-# inisiasi variabel kosong bertipe dictionary
-identitas = {}  # variable global, dictionary = json
-
-# membuat class Resource
-
-
-class ContohResource(Resource):
-    # fungi get dan post
-    def get(self):
-        #response = {"msg": "Hallo dunia, ini app resful pertamaku"}
-        return identitas
-
-    def post(self):
-        nama = request.form["nama"]
-        umur = request.form["umur"]
-        identitas["nama"] = nama
-        identitas["umur"] = umur
-        response = {"msg": "Sukses BOSQUE!"}
-        return response
-
-
-# setup resourcenya
-api.add_resource(ContohResource, "/api", methods=["GET", "POST"])
+@aplikasi.route("/dashboard/")
+def dashboard():
+    return render_template('dashboard.html')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5005)
+    aplikasi.run(debug=True, port=5005)
